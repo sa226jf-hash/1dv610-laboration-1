@@ -1,4 +1,5 @@
 import { createInterface } from 'node:readline'
+import figlet from "figlet"
 
 const terminal = createInterface({
   input: process.stdin,
@@ -28,8 +29,54 @@ const messages = [
   "Om du inte vet vad koden gör, ändra ingenting och låtsas att du planerar."
 ]
 
-terminal.question('Vad heter du? ', (name) => {
-  console.log(`Hej ${name}!`)
-  console.log(messages[Math.floor(Math.random() * messages.length)])
+async function createGreeting(name) {
+
+  const input = name
+    .trim()
+    .split(/\s+/)
+    .map(word => word[0].toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ')
+
+  const welcome = 'Välkommen'
+  const greeting = (await figlet.text(`   ${input}!`)).trimEnd().toLowerCase()
+  const lines = greeting.split('\n')
+  const message = messages[Math.floor(Math.random() * messages.length)]
+
+  const longestLine = Math.max(
+    ...lines.map(line => line.trim().length),
+    message.length
+  )
+
+  const width = longestLine + 6
+
+  const centerLines = (text, width) => {
+    return text
+      .split('\n')
+      .map(line => {
+        const trimmedLine = line.trim()
+        const space = Math.floor((width - trimmedLine.length) / 2)
+
+        return ' '.repeat(space) + trimmedLine
+      })
+      .join('\n')
+  }
+
+  const centeredWelcome = centerLines(welcome, width)
+  const centeredGreeting = centerLines(greeting, width)
+  const centeredMessage = centerLines(message, width)
+
+  console.log('')
+  console.log('-'.repeat(width))
+  console.log('')
+  console.log(centeredWelcome)
+  console.log(centeredGreeting)
+  console.log('')
+  console.log(centeredMessage)
+  console.log('')
+  console.log('-'.repeat(width))
+  console.log('')
+
   terminal.close()
-})
+}
+
+terminal.question('Vad heter du? ', createGreeting)

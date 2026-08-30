@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/sa226jf-hash/1dv610-laboration-1/issues"
   },
-  "homepage": "https://github.com/sa226jf-hash/1dv610-laboration-1#readme"
+  "homepage": "https://github.com/sa226jf-hash/1dv610-laboration-1#readme",
+  "dependencies": {
+    "figlet": "^1.11.4"
+  }
 }
